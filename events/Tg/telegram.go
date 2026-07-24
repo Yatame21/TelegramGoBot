@@ -23,4 +23,7 @@ func (p *Processor) Fetch(limit int) ([]events.Event, error) {
 
 	res := make([]evets.Event, 0, len(update))
 
+	for _, u := range update {
+		res = append(res, event(u))
+	}
 }
