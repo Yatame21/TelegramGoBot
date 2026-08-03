@@ -8,6 +8,11 @@ type Dispatcher struct {
 	storage storage.Storage
 }
 
+type Meta struct {
+	ChatID   int
+	Username string
+}
+
 func New(client *telegram.Client, storage storage.Storage) *Processor {
 	return &Processor{
 		tg:      client,
@@ -26,4 +31,27 @@ func (p *Processor) Fetch(limit int) ([]events.Event, error) {
 	for _, u := range update {
 		res = append(res, event(u))
 	}
+}
+
+func event(upd telegram.Update) events.Event {
+	updType := fetchType(upd)
+
+	res := events.Event{
+		Type: updType,
+		Text: fetchText(upd),
+	}
+}
+
+func fetchText(upd telegram.Update) string {
+	if upd.Message == nil {
+		return ""
+	}
+	return upd.Message.Text
+}
+
+func fetchType(upd telegram.Update) events.Type {
+	if upd.Message == nil {
+		return events.Unknown
+	}
+	return events.Message
 }
