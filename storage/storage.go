@@ -14,6 +14,8 @@ type Storage interface {
 	IsExists(p *Page) (bool, error)
 }
 
+var ErrNoSavedPages = errors.New("no saved pages")
+
 type Page struct {
 	URL      string
 	UserName string
