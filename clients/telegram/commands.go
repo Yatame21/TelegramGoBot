@@ -1,7 +1,9 @@
 package telegram
 
 import (
+	"errors"
 	"log"
+	"net/url"
 	"strings"
 )
 

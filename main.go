@@ -7,12 +7,23 @@ import (
 )
 
 const (
-	tgBotHost = "api.telegram.org"
+	tgBotHost   = "api.telegram.org"
+	storagePath = "storage"
+	batchSize   = 100
 )
 
 func main() {
 
-	tgClient := telegram.New(tgBotHost, mustToken())
+	eventsProcessor := telegram2.New(telegram.New(
+		tgBotHost, mustToken()),
+		files.New(storagePath),
+	)
+	log.Printf("starting telegram bot")
+
+	consumer = eventconsumer.New(eventsProcessor, eventsProcessor, batchSize)
+	if err := consumer.Start(); err != nil {
+		log.Fatal("service is stopped", err)
+	}
 
 }
 
