@@ -1,4 +1,4 @@
-package telegram
+package Tg
 
 import (
 	"errors"
@@ -30,7 +30,7 @@ func (p *Processor) doCmd(text string, chatID int, username string) error {
 	case StartCmd:
 		return p.SendHello(chatID)
 	default:
-		return p.tg.SendMessage(chatID, msgUnknownCommand)
+		return p.tg.SendMessage(chatID, Tg.msgUnknownCommand)
 	}
 }
 
@@ -47,12 +47,12 @@ func (p *Processor) savePage(chatID int, pageURL string, username string) (err e
 		return err
 	}
 	if isExists {
-		return p.tg.SendMessage(chatID, msgAlreadyExists)
+		return p.tg.SendMessage(chatID, Tg.msgAlreadyExists)
 	}
 	if err := p.storage.Save(page); err != nil {
 		return err
 	}
-	if err := p.tg.SendMessage(chatID, msgSaved); err != nil {
+	if err := p.tg.SendMessage(chatID, Tg.msgSaved); err != nil {
 		return err
 	}
 	return nil
@@ -66,7 +66,7 @@ func (p *Processor) SendRandom(chatID int, username string) (err error) {
 		return err
 	}
 	if errors.Is(err, storage.ErrNoSavedPages) {
-		return p.tg.SendMessage(chatID, msgNoSavedPages)
+		return p.tg.SendMessage(chatID, Tg.msgNoSavedPages)
 	}
 
 	if err := p.tg.SendMessage(chatID, page.URL); err != nil {
@@ -76,11 +76,11 @@ func (p *Processor) SendRandom(chatID int, username string) (err error) {
 }
 
 func (p *Processor) SendHelp(chatID int) error {
-	return p.tg.SendMessage(chatID, msgHelp)
+	return p.tg.SendMessage(chatID, Tg.msgHelp)
 }
 
 func (p *Processor) SendHello(chatID int) error {
-	return p.tg.SendMessage(chatID, msgHello)
+	return p.tg.SendMessage(chatID, Tg.msgHello)
 }
 
 func isAddCmd(text string) bool {

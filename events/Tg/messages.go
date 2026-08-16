@@ -1,4 +1,4 @@
-package telegram
+package Tg
 
 const msgHelp = `This bot stores your links and returns them upon request.
 
