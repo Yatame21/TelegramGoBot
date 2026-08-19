@@ -1,6 +1,13 @@
-package Tg
+package telegram
 
-import "TestGOBot/clients/telegram"
+import (
+	"errors"
+
+	"TestGOBot/clients/telegram"
+	"TestGOBot/events"
+	"TestGOBot/lib/e"
+	"TestGOBot/storage"
+)
 
 type Dispatcher struct {
 	tg      *telegram.Client

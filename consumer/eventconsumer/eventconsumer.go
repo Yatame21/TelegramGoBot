@@ -1,5 +1,12 @@
 package eventconsumer
 
+import (
+	"log"
+	"time"
+
+	"TestGOBot/events"
+)
+
 type Consumer struct {
 	fetcher   events.Fetcher
 	processor events.Processor

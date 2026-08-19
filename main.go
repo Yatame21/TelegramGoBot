@@ -1,14 +1,15 @@
 package main
 
 import (
-	"TestGOBot/clients/telegram"
+	"TestGOBot/consumer/eventconsumer"
+	"TestGOBot/events/telegram"
 	"flag"
 	"log"
 )
 
 const (
 	tgBotHost   = "api.telegram.org"
-	storagePath = "storage"
+	storagePath = "files_storage"
 	batchSize   = 100
 )
 

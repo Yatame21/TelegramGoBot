@@ -1,10 +1,14 @@
-package Tg
+package telegram
 
 import (
+	"context"
 	"errors"
 	"log"
 	"net/url"
 	"strings"
+
+	"TestGOBot/lib/e"
+	"TestGOBot/storage"
 )
 
 const (
@@ -42,7 +46,7 @@ func (p *Processor) savePage(chatID int, pageURL string, username string) (err e
 		UserName: username,
 	}
 
-	isExists, err := p.storage.IsExists(page)
+	isExists, err := p.storage.IsExists(context.Background(), page)
 	if err != nil {
 		return err
 	}
@@ -61,7 +65,7 @@ func (p *Processor) savePage(chatID int, pageURL string, username string) (err e
 func (p *Processor) SendRandom(chatID int, username string) (err error) {
 	defer func() { err = e.WrapIfErr("failed to send random page", err) }()
 
-	page, err := p.storage.PickRandomPage(username)
+	page, err := p.storage.PickRandomPage(context.Background(), username)
 	if err != nil && !errors.Is(err, storage.ErrNoSavedPages) {
 		return err
 	}
@@ -72,7 +76,7 @@ func (p *Processor) SendRandom(chatID int, username string) (err error) {
 	if err := p.tg.SendMessage(chatID, page.URL); err != nil {
 		return err
 	}
-	return p.storage.Remove(page)
+	return p.storage.Remove(context.Background(), page)
 }
 
 func (p *Processor) SendHelp(chatID int) error {

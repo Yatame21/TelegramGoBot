@@ -3,6 +3,7 @@ package storage
 import (
 	"TestGOBot/lib/e"
 	"crypto/sha1"
+	"errors"
 	"fmt"
 	"io"
 )
