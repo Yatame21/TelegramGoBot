@@ -9,7 +9,7 @@ import (
 	"TestGOBot/storage"
 )
 
-type Dispatcher struct {
+type Processor struct {
 	tg      *telegram.Client
 	offset  int
 	storage storage.Storage
@@ -42,7 +42,7 @@ func (p *Processor) Fetch(limit int) ([]events.Event, error) {
 		return nil, nil
 	}
 
-	res := make([]evets.Event, 0, len(updates))
+	res := make([]events.Event, 0, len(updates))
 
 	for _, u := range updates {
 		res = append(res, event(u))
@@ -60,13 +60,13 @@ func (p *Processor) Process(event events.Event) error {
 	}
 }
 
-func (p *Processor) processMessage(event events.Event) {
+func (p *Processor) processMessage(event events.Event) error {
 	meta, err := meta(event)
 	if err != nil {
 		return e.Wrap("cannot process message", err)
 	}
 
-	if err := p.doCmd(event.Text, me.ChatID, meta.Username); err != nil {
+	if err := p.doCmd(event.Text, meta.ChatID, meta.Username); err != nil {
 		return e.Wrap("cannot process message", err)
 	}
 	return nil
@@ -90,7 +90,7 @@ func event(upd telegram.Update) events.Event {
 	if updType == events.Message {
 		res.Meta = Meta{
 			ChatID:   upd.Message.Chat.ID,
-			Username: upd.Message.From.UserName,
+			Username: upd.Message.From.Username,
 		}
 	}
 	return res

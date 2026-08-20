@@ -52,7 +52,7 @@ func (s Storage) Save(page *storage.Page) (err error) {
 func (s Storage) PickRandom(UserName string) (page *storage.Page, err error) {
 	defer func() { err = e.WrapIfErr("cannot pick random", err) }()
 
-	filePath := filepath.Join(s.basePath, page.UserName)
+	filePath := filepath.Join(s.basePath, UserName)
 
 	files, err := os.ReadDir(filePath)
 	if err != nil {
