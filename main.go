@@ -1,8 +1,10 @@
 package main
 
 import (
+	tgClient "TestGOBot/clients/telegram"
 	"TestGOBot/consumer/eventconsumer"
 	"TestGOBot/events/telegram"
+	"TestGOBot/storage/files"
 	"flag"
 	"log"
 )
@@ -15,13 +17,13 @@ const (
 
 func main() {
 
-	eventsProcessor := telegram2.New(telegram.New(
-		tgBotHost, mustToken()),
+	eventsProcessor := telegram.New(
+		tgClient.New(tgBotHost, mustToken()),
 		files.New(storagePath),
 	)
 	log.Printf("starting telegram bot")
 
-	consumer = eventconsumer.New(eventsProcessor, eventsProcessor, batchSize)
+	consumer := eventconsumer.New(eventsProcessor, eventsProcessor, batchSize)
 	if err := consumer.Start(); err != nil {
 		log.Fatal("service is stopped", err)
 	}
