@@ -17,7 +17,7 @@ const (
 )
 
 func main() {
-	//s := files.New(storagePath)
+
 	s, err := sqlite.New(sqliteStoragePath)
 	if err != nil {
 		log.Fatal("cannot connect to storage: ", err)
