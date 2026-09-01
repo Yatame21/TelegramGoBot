@@ -45,7 +45,7 @@ func (s *Storage) PickRandom(ctx context.Context, userName string) (*storage.Pag
 
 	err := s.db.QueryRowContext(ctx, q, userName).Scan(&url)
 	if err == sql.ErrNoRows {
-		return nil, nil
+		return nil, storage.ErrNoSavedPages
 	}
 	if err != nil {
 		return nil, fmt.Errorf("cannot pick random page: %w", err)
